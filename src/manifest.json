@@ -1,11 +1,11 @@
 {
-  "name": "Kiosk",
-  "description": "Launch any URL as a full-screen kiosk. (Works with Appazur Kiosk Launcher.)",
+  "name": "Appazur Kiosk",
+  "description": "This is a version of the original Kiosk app by ZEBRADOG, for use with the Appazur Kiosk Launcher extension.",
   "manifest_version": 2,
-  "version": "5.5.1",
+  "version": "5.5.1.1",
   "author": {
-    "name": "ZEBRADOG",
-    "email": "support@zebradog.com"
+    "name": "Appazur Solutions",
+    "email": "info+kiosk@appazur.com"
   },
   "kiosk_enabled": true,
   "offline_enabled": true,

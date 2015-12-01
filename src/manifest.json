@@ -2,7 +2,7 @@
   "name": "Appazur Kiosk",
   "description": "This is a version of the original Kiosk app by ZEBRADOG, for use with the Appazur Kiosk Launcher extension.",
   "manifest_version": 2,
-  "version": "5.5.1.1",
+  "version": "5.5.1.3",
   "author": {
     "name": "Appazur Solutions",
     "email": "info+kiosk@appazur.com"

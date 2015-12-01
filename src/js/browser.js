@@ -217,6 +217,7 @@ $(function(){
       setTimeout(function(){
         loadContent();
         restarting = false;
+        console.log('onEnded: restarted');
       },RESTART_DELAY);
    }
   }

@@ -8,31 +8,36 @@ function init() {
   //don't let computer sleep
   chrome.power.requestKeepAwake("display");
 
-  // Check for configuration override with Appazur Kiosk Launcher extension:
-  var kioskLauncherId = "gafgnggdglmjplpklcfhcgfaeehecepg";
-  chrome.runtime.sendMessage(kioskLauncherId, { getUrl: true },
-    function(response) {
-	  if(response) {
-		  console.log('Kiosk Launcher detected.');
-		  // wait a sec to ensure that Launcher has had time to get URL
-		  setTimeout(function () {
-			  chrome.runtime.sendMessage(kioskLauncherId, { getUrl: true }, function(response) {
-				  if(response && response.url) {
-					  console.log('URL configuration override from Kiosk Launcher:', response.url);
-					  chrome.storage.local.set({'url': response.url}, function() {
-						  start();
-					  });
-				  }
-			  });
-		  }, 1000);
-	  }
-	  else {
-		  console.log('Kiosk Launcher not installed.');
-		  start();
-	  }
-    }
-  );
-
+  try {
+	  // Check for configuration override with Appazur Kiosk Launcher extension:
+	  var kioskLauncherId = "gafgnggdglmjplpklcfhcgfaeehecepg";
+	  chrome.runtime.sendMessage(kioskLauncherId, { getConfig: true },
+	    function(response) {
+		  if(response) {
+			  console.log('Kiosk Launcher detected.');
+			  // wait a sec to ensure that Launcher has had time to get URL
+			  setTimeout(function () {
+				  chrome.runtime.sendMessage(kioskLauncherId, { getConfig: true }, function(response) {
+				    if(response && response.url) {
+						  console.log('Configuration override from Kiosk Launcher:', JSON.stringify(response));
+						  chrome.storage.local.set(response, function() {
+							  start();
+						  });
+					  }
+				  });
+			  }, 1000);
+		  }
+		  else {
+			  console.log('Kiosk Launcher not installed.');
+			  start();
+		  }
+	    }
+	  );
+  }
+  catch(e) {
+	  console.log('Exception in sendMessage(kioskLauncherId):', e);
+  }
+  
   chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
     if(request == "demo") openWindow("windows/demo.html");
   });

@@ -102,7 +102,13 @@ $(function(){
        var hour = parseInt(data.restart) - 1;
        var now = moment();
        restart = moment();
-       restart.hour(hour).set({'minute':0, 'second':0, 'millisecond':0});
+       restart.hour(hour).set({
+    	   // Set to restart at a random time within a few minutes of the specified 
+    	   // hour, so that if lots of kiosks have the same restart time, the load 
+    	   // is not simultaneous.
+    	   'minute': Math.floor(Math.random()*5), 
+    	   'second': Math.floor(Math.random()*60), 
+    	   'millisecond':0});
        if(now.isAfter(restart)) restart.add(1,'d'); //if we're past the time today, do it tomorrow
        setInterval(function(){
           var now = moment();

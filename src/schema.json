@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Appazur Kiosk Configuration",
+  "type": "object",
+  "properties": {
+    "url": {
+        "description": "Frame URL",
+        "type": "string"
+     }
+  }
+}

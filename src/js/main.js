@@ -9,33 +9,44 @@ function init() {
   chrome.power.requestKeepAwake("display");
 
   try {
-	  // Check for configuration override with Appazur Kiosk Launcher extension:
-	  var kioskLauncherId = "gafgnggdglmjplpklcfhcgfaeehecepg";
-	  chrome.runtime.sendMessage(kioskLauncherId, { getConfig: true },
-	    function(response) {
-		  if(response) {
-			  console.log('Kiosk Launcher detected.');
-			  // wait a sec to ensure that Launcher has had time to get URL
-			  setTimeout(function () {
-				  chrome.runtime.sendMessage(kioskLauncherId, { getConfig: true }, function(response) {
-				    if(response && response.url) {
-						  console.log('Configuration override from Kiosk Launcher:', JSON.stringify(response));
-						  chrome.storage.local.set(response, function() {
-							  start();
-						  });
-					  }
-				  });
-			  }, 1000);
+	  chrome.storage.managed.get(null, function(items) {
+		  console.log('Group Policy: ' + JSON.stringify(items));
+		  if(items.url) {
+			  chrome.storage.local.set(items, function() {
+				  start();
+			  });
 		  }
 		  else {
-			  console.log('Kiosk Launcher not installed.');
-			  start();
+			  console.log('WARNING: no url set by group policy. Checking legacy kiosk launcher...');
+			  // Check for configuration override with Appazur Kiosk Launcher extension:
+			  var kioskLauncherId = "gafgnggdglmjplpklcfhcgfaeehecepg";
+			  chrome.runtime.sendMessage(kioskLauncherId, { getConfig: true },
+			    function(response) {
+				  if(response) {
+					  console.log('Kiosk Launcher detected.');
+					  // wait a sec to ensure that Launcher has had time to get URL
+					  setTimeout(function () {
+						  chrome.runtime.sendMessage(kioskLauncherId, { getConfig: true }, function(response) {
+						    if(response && response.url) {
+								  console.log('Configuration override from Kiosk Launcher:', JSON.stringify(response));
+								  chrome.storage.local.set(response, function() {
+									  start();
+								  });
+							  }
+						  });
+					  }, 1000);
+				  }
+				  else {
+					  console.log('Kiosk Launcher not installed.');
+					  start();
+				  }
+			    }
+			  );
 		  }
-	    }
-	  );
+	  });
   }
   catch(e) {
-	  console.log('Exception in sendMessage(kioskLauncherId):', e);
+	  console.log('Exception while checking configuration:', e);
   }
   
   chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){

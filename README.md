@@ -59,14 +59,14 @@ Application can be completely restarted at an administrator-specified time once 
 
 ###Remote Schedule Server
 
-Accepts a URL to a JSON feed for a content schedule. If no item is currently scheduled, the default content (specified by the Content URL on Kiosk setup page) is used. Default content will be overridden by scheduled items. Schedule URL is polled every 15 minutes. Schedule should be formatted according to (a simplified version of) the format provided by [Chrome Sign Builder](https://chrome.google.com/webstore/detail/chrome-sign-builder/odjaaghiehpobimgdjjfofmablbaleem?hl=en) (exported schedules from Chrome Sign Builder are currently supported without support for screen position, repetition or display settings):
+Accepts a URL to a JSON feed for a content schedule. If no item is currently scheduled, the default content (specified by the Content URL on Kiosk setup page) is used. Default content will be overridden by scheduled items. Schedule URL is polled at configurable interval. `kiosk_t` parameter is appended to the URL with a value of the current timestamp to prevent caching of the schedule. Schedule should be formatted according to (a simplified version of) the format provided by [Chrome Sign Builder](https://chrome.google.com/webstore/detail/chrome-sign-builder/odjaaghiehpobimgdjjfofmablbaleem?hl=en) (exported schedules from Chrome Sign Builder are currently supported without support for screen position, repetition or display settings):
 ```
 {
   "schedule": {
     "Value":  {
       "items": [
         {
-          "content": "http://www.zebradog.com",
+          "content": "http://www.github.com",
           "end": "Tue Jul 14 2015 12:30:00 GMT-0500",
           "start": "Tue Jul 14 2015 09:30:00 GMT-0500",
         },
@@ -91,22 +91,56 @@ On ChromeOS devices: Using managed devices and setting Kiosk application to star
 On Windows and OSX: From chrome://apps/ right click on "Kiosk" and "Create shortcut" then copy this shortcut into the startup folder (Windows) or add to login items (OSX).
 Linux: Likely similar to Windows and OSX, untested.
 
-##Support
+##Support & Feature Requests
 
-This product is maintained by [ZEBRADOG](http://www.zebradog.com) and provided without warranty or guaranteed  support. If you need a bug fix please check that it has not be reported and submit details here: https://github.com/zebradog/kiosk/issues Patches and new features are released at our convenience. If you need a bug fix or new feature on a specific schedule, please send details to support@zebradog.com for a quote.
+This product is maintained by [Matt Cook](mailto:matt@lookitscook.com) and provided without warranty or guaranteed  support. If you need a bug fix please check that it has not be reported and submit details here: https://github.com/matt-cook/kiosk/issues
+
+Patches and new features are released at our convenience. If you need a bug fix or new feature on a specific schedule, please send details to matt@lookitscook.com for a quote. Alternatively, if the issue does not yet have a milestone assigned to it, add a bounty via https://www.bountysource.com and either we or a third party developer can prioritize the update.
+
+Pull requests are welcome.
 
 ##Known Limitations
 
-- [Remote management is inaccessible on ChromeOS.](https://github.com/zebradog/kiosk/issues/14)
-- [Content URLs must be public. (http:// or https://)](https://github.com/zebradog/kiosk/issues/9)
-- [OSX menu bar will show on hover.](https://github.com/zebradog/kiosk/issues/41)
+- [Remote management is inaccessible on ChromeOS.](https://github.com/matt-cook/kiosk/issues/14)
+- [Content URLs must be public. (http:// or https://)](https://github.com/matt-cook/kiosk/issues/9)
+- [OSX menu bar will show on hover.](https://github.com/matt-cook/kiosk/issues/41)
 
 ##Changelog
+
+- v5.7.3
+  - Bug fix: inactivity reset correctly detects input on touch screens
+  - Bug fix: prevent content reload from throwing error
+
+- v5.7.2
+  - Allow simplified version of schedule JSON
+  - Bug fix: load schedule JSON cross-domain
+  - Bug fix: append time to schedule JSON to prevent caching
+
+- v5.7.1
+  - Bug fix: clear cache now fully clears cache
+
+- v5.7.0
+    - Sleep/screensaver mode configurable
+
+- v5.6.0
+  - Allow files to be served from local directory
+  - Add option to clear cache on save
+  - Add option to set custom user agent
+  - Bug fix: Reload will now work correctly on all systems.
+
+- v5.5.2
+  - Bug fix: Correctly focus form-fields on load.
+  - Bug fix: Save cookies, etc. across sessions.
+  - Bug fix: 1:00 or 2:00 AM/PM restart time now loads correctly.
+  - Change default remote management port to 8080 since 80 is blocked on ChromeOS.
+  - Allow videos in content to go full screen.
+  - Prevent exiting fullscreen by pressing escape
+
 - v5.5.1
-  - Fixed bug: users on 5.4.0 with scheduling enabled experience rapid polling upon upgrade to 5.5.0. 
-  
+  - Bug fix: users on 5.4.0 with scheduling enabled experience rapid polling upon upgrade to 5.5.0.
+
 - v5.5.0
-  - Fixed bug with switching scheduled content
+  - Bug fix: switching scheduled content
   - Added ability to set schedule polling interval
 
 - v5.4.0
@@ -118,10 +152,10 @@ This product is maintained by [ZEBRADOG](http://www.zebradog.com) and provided w
     - Added option to disable text selection
 
 - v5.3.4
-    - Fixed bug with restart scheduling
+    - Bug fix: restart scheduling
 
 - v.5.3.3
-    - Fixed bug with reset/restart combo.
+    - Bug fix: reset/restart combo.
 
 - v.5.3.2
     - Optional webcam/mic access added.
@@ -147,7 +181,7 @@ This product is maintained by [ZEBRADOG](http://www.zebradog.com) and provided w
 	- automatically attempt to reconnect to content if connection broken
 
 - v5.1.1
-	- fixed 1/5 screen fullscreen bug on Windows 8
+	- Bug fix: 1/5 screen fullscreen on Windows 8
 
 - v5.1.0
 	- started using proper semver

@@ -1,6 +1,15 @@
 chrome.app.runtime.onLaunched.addListener(init);
 chrome.app.runtime.onRestarted.addListener(init);
 
+function randomString(length) {
+    var text = "";
+    var possible = "0123456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+    for(var i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+}
+
 function init() {
   var win, basePath, socketInfo, data;
   var filesMap = {};
@@ -11,10 +20,32 @@ function init() {
   try {
 	  chrome.storage.managed.get(null, function(items) {
 		  console.log('Group Policy: ' + JSON.stringify(items));
+		  //if(!items.url) items.url='http://.../...-CHROMEOS-{id}';
 		  if(items.url) {
-			  chrome.storage.local.set(items, function() {
-				  start();
-			  });
+		      // Generate unique computer ID for Chromebox ONLY if URL not previously set.
+		      if(items.url.includes('{id}')) {
+		          console.log('Group Policy URL needs Chromebox ID');
+		          chrome.storage.local.get(['url'],function(d){
+		              if(('url' in d)){
+		                  // Do not overwrite, keep existing value.
+		                  console.log('Already set:', d['url']);
+		                  delete items["url"];
+		              }
+		              else {
+	                      items.url=items.url.replace('{id}', randomString(8));
+                          console.log('Generated ID:', items.url);
+		              }
+		              
+	                  chrome.storage.local.set(items, function() {
+	                      start();
+	                  });
+		          });
+		      }
+		      else {
+    			  chrome.storage.local.set(items, function() {
+    				  start();
+    			  });
+		      }
 		  }
 		  else {
 			  console.log('WARNING: no url set by group policy. Checking legacy kiosk launcher...');
@@ -36,7 +67,7 @@ function init() {
 						  });
 					  }, 1000);
 				  }
-				  else {
+			      else {
 					  console.log('Kiosk Launcher not installed.');
 					  start();
 				  }

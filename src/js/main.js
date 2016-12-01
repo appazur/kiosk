@@ -22,21 +22,23 @@ function init() {
 		  console.log('Group Policy: ' + JSON.stringify(items));
 		  //if(!items.url) items.url='http://.../...-CHROMEOS-{id}';
 		  if(items.url) {
-		      // Generate unique computer ID for Chromebox ONLY if URL not previously set.
+		      // Generate unique computer ID for Chromebox ONLY when first run.
 		      if(items.url.includes('{id}')) {
-		          console.log('Group Policy URL needs Chromebox ID');
-		          chrome.storage.local.get(['url'],function(d){
-		              if(('url' in d)){
-		                  // Do not overwrite, keep existing value.
-		                  console.log('Already set:', d['url']);
-		                  delete items["url"];
-		              }
-		              else {
-	                      items.url=items.url.replace('{id}', randomString(8));
-                          console.log('Generated ID:', items.url);
-		              }
-		              
-	                  chrome.storage.local.set(items, function() {
+		          chrome.storage.local.get(['uid'],function(d){
+		              var hasUid=('uid' in d);
+		              var uid = hasUid
+		                  ? d['uid']
+		                  : randomString(8);
+                      console.log('UID:', uid);
+                      
+                      if(!hasUid) {
+                          console.log('Storing new UID');
+                          chrome.storage.local.set({ uid: uid });
+                      }
+                      
+                      // Do this everytime, in case group policy URL changed:
+                      items.url=items.url.replace('{id}', uid);
+		              chrome.storage.local.set(items, function() {
 	                      start();
 	                  });
 		          });

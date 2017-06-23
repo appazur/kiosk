@@ -6,6 +6,54 @@
     "url": {
         "description": "Frame URL",
         "type": "string"
+     },
+    "restart": {
+        "description": "Daily Restart Hour (1-24)",
+        "type": "number"
+     },
+    "username": {
+        "description": "Username",
+        "type": "string"
+     },
+    "password": {
+        "description": "Password",
+        "type": "string"
+     },
+    "remote": {
+        "description": "Remote Access",
+        "type": "boolean"
+     },
+    "local": {
+        "description": "Local Access",
+        "type": "boolean"
+     },
+    "host": {
+        "description": "Host",
+        "type": "string"
+     },
+    "port": {
+        "description": "Port",
+        "type": "number"
+     },
+    "hidecursor": {
+        "description": "Hide Cursor",
+        "type": "boolean"
+     },
+    "disablecontextmenu": {
+        "description": "disable context menu",
+        "type": "boolean"
+     },
+    "disabledrag": {
+        "description": "disable drag",
+        "type": "boolean"
+     },
+    "disabletouchhighlight": {
+        "description": "disable touch highlight",
+        "type": "boolean"
+     },
+    "disableselection": {
+        "description": "disable selection",
+        "type": "boolean"
      }
   }
 }

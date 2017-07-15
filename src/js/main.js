@@ -50,31 +50,26 @@ function init() {
 		      }
 		  }
 		  else {
-			  console.log('WARNING: no url set by group policy. Checking legacy kiosk launcher...');
-			  // Check for configuration override with Appazur Kiosk Launcher extension:
-			  var kioskLauncherId = "gafgnggdglmjplpklcfhcgfaeehecepg";
-			  chrome.runtime.sendMessage(kioskLauncherId, { getConfig: true },
-			    function(response) {
-				  if(response) {
-					  console.log('Kiosk Launcher detected.');
-					  // wait a sec to ensure that Launcher has had time to get URL
-					  setTimeout(function () {
-						  chrome.runtime.sendMessage(kioskLauncherId, { getConfig: true }, function(response) {
-						    if(response && response.url) {
-								  console.log('Configuration override from Kiosk Launcher:', JSON.stringify(response));
-								  chrome.storage.local.set(response, function() {
-									  start();
-								  });
-							  }
-						  });
-					  }, 1000);
-				  }
-			      else {
-					  console.log('Kiosk Launcher not installed.');
-					  start();
-				  }
-			    }
-			  );
+		      //console.log('No url set by group policy.');
+		      if(typeof process !== 'undefined' && process.release.name === 'node') {
+		          console.log('node.js detected');
+		          if(!nw.App.argv.length) {
+		              console.log('No server domain provided in args.');
+		              start();
+		          }
+		          else {
+    		          var os = require('os');
+                      var settings = {};
+                      settings.url = 'http://' + nw.App.argv[0] + '/pub/display/' + os.hostname();
+                      console.log(settings.url);
+                      chrome.storage.local.set(settings, function() {
+                          start();
+                      });
+		          }
+		      } else {
+		           console.log('NW.js not detected. "node" permission is required!');
+		           start();
+		      }
 		  }
 	  });
   }

@@ -1,9 +1,10 @@
 {
-  "chromium-args": "--enable-logging=stderr",
+  "chromium-args": "--enable-gcm --disable-infobars --disable-session-crashed-bubble --enable-logging=stderr",
+  "key": "lgdiiajgagjndcjeakmgheeghkaoifbm",
   "name": "Appazur Kiosk",
   "description": "This version of the Kiosk app is intended for Appazur Digital Signage.",
   "manifest_version": 2,
-  "version": "5.5.1.24",
+  "version": "5.5.1.300",
   "author": {
     "name": "Appazur Solutions",
     "email": "info+kiosk@appazur.com"
@@ -30,6 +31,7 @@
   },
   "permissions": [
     "node",
+    "gcm",
     "system.display",
     "system.network",
     "power",
@@ -38,5 +40,7 @@
     "storage",
     {"fileSystem": ["directory"]}
   ],
-  "optional_permissions": [ "audioCapture", "videoCapture" ]
+  "externally_connectable": {
+    "matches": ["*://*.appazur.com/*","*://*.school2go.ca/*","http://sunnycrest.lan:8000/*"]
+  }
 }

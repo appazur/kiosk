@@ -18,6 +18,49 @@ function init() {
   chrome.power.requestKeepAwake("display");
 
   try {
+    chrome.runtime.onMessageExternal.addListener(
+      function(request, sender, sendResponse) {
+          if (request.register_gcm) {
+              console.log('register_gcm handler');
+              chrome.storage.local.get(["gcm_registered"], function(result) {
+                try {
+                    console.log(JSON.stringify(result));
+                    // If already registered, bail out.
+                    if ("gcm_registered" in result) {
+                        sendResponse({gcm_status: 'already_done'});
+                        return;
+                    }
+                    var senderIds = [request.register_gcm.toString()];
+                    console.log(JSON.stringify(senderIds));
+                    chrome.gcm.register(senderIds, function(registrationId) {
+                        if (chrome.runtime.lastError) {
+                            console.log('lastError: ' + JSON.stringify(chrome.runtime.lastError));
+                            // When the registration fails, handle the error and retry the
+                            // registration later.
+                            sendResponse({gcm_status: 'error'});
+                            return;
+                        }
+                        console.log(registrationId);
+                        sendResponse({gcm_token: registrationId});
+                        //TODO chrome.storage.local.set({gcm_registered: true});
+                    });
+                    console.log('gcm.register called');
+                } catch(e) {
+                    console.log('get gcm_registered:'+e);
+                }
+              });
+             
+              // flag re async response to follow
+              return true;
+          }
+      }
+    );
+  } 
+  catch(e) {
+      console.log('register_gcm handler setup: '+e);
+  }
+  
+  try {
 	  chrome.storage.managed.get(null, function(items) {
 		  console.log('Group Policy: ' + JSON.stringify(items));
 		  //if(!items.url) items.url='http://.../...-CHROMEOS-{id}';
@@ -53,14 +96,20 @@ function init() {
 		      //console.log('No url set by group policy.');
 		      if(typeof process !== 'undefined' && process.release.name === 'node') {
 		          console.log('node.js detected');
+		          console.log(chrome.runtime.id);
 		          if(!nw.App.argv.length) {
 		              console.log('No server domain provided in args.');
 		              start();
 		          }
 		          else {
     		          var os = require('os');
+    		          var computername = os.hostname();
+    		          if(nw.App.argv.length >= 2) {
+    		              // computer name override
+    		              computername = nw.App.argv[1];
+    		          }
                       var settings = {};
-                      settings.url = 'http://' + nw.App.argv[0] + '/pub/display/' + os.hostname();
+                      settings.url = 'http://' + nw.App.argv[0] + '/pub/display/' + computername;
                       console.log(settings.url);
                       chrome.storage.local.set(settings, function() {
                           start();

@@ -128,15 +128,24 @@ function init() {
 		              start();
 		          }
 		          else {
-    		          var os = require('os');
-    		          var computername = os.hostname();
-    		          if(nw.App.argv.length >= 2) {
-    		              // computer name override
-    		              computername = nw.App.argv[1];
-    		          }
-                      var settings = {};
+    	              var os = require('os');
+                      var settings = {
+                           'hidecursor': true,
+                           'username': 'admin',
+                           'local': false
+                      };
+                      if(nw.App.argv.length >= 2) {
+                          // local password
+                          settings.local = true;
+                          settings.password = nw.App.argv[1];
+                      }
+                      var computername = os.hostname();
+                      if(nw.App.argv.length >= 3) {
+                          // computer name override
+                          computername = nw.App.argv[2];
+                      }
                       settings.url = 'http://' + nw.App.argv[0] + '/pub/display/' + computername;
-                      console.log(settings.url);
+                      console.log(JSON.stringify(settings.url));
                       chrome.storage.local.set(settings, function() {
                           start();
                       });

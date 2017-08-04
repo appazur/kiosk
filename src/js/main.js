@@ -13,6 +13,7 @@ function randomString(length) {
 function init() {
   var win, basePath, socketInfo, data;
   var filesMap = {};
+  var gcm_registered = false;
 
   //don't let computer sleep
   chrome.power.requestKeepAwake("display");
@@ -21,15 +22,20 @@ function init() {
     chrome.runtime.onMessageExternal.addListener(
       function(request, sender, sendResponse) {
           if (request.register_gcm) {
-              console.log('register_gcm handler');
-              chrome.storage.local.get(["gcm_registered"], function(result) {
+              console.log('register_gcm handler '+gcm_registered);
+              // Sample code stored flag in localstorage, but we don't restart
+              // too often and we want to make sure we're registered.
+              // If frame.html fails to call api successfully, we don't hear 
+              // about it.
+              //chrome.storage.local.get(["gcm_registered"], function(result) {
+              if(!gcm_registered) {
                 try {
-                    console.log(JSON.stringify(result));
+                    /*console.log(JSON.stringify(result));
                     // If already registered, bail out.
                     if ("gcm_registered" in result) {
                         sendResponse({gcm_status: 'already_done'});
                         return;
-                    }
+                    }*/
                     var senderIds = [request.register_gcm.toString()];
                     console.log(JSON.stringify(senderIds));
                     chrome.gcm.register(senderIds, function(registrationId) {
@@ -40,21 +46,41 @@ function init() {
                             sendResponse({gcm_status: 'error'});
                             return;
                         }
-                        console.log(registrationId);
+                        //console.log(registrationId);
                         sendResponse({gcm_token: registrationId});
-                        //TODO chrome.storage.local.set({gcm_registered: true});
+                        gcm_registered = true;
+                        //chrome.storage.local.set({gcm_registered: true});
                     });
                     console.log('gcm.register called');
                 } catch(e) {
                     console.log('get gcm_registered:'+e);
                 }
-              });
+              } //);
              
               // flag re async response to follow
               return true;
           }
       }
     );
+    
+    chrome.gcm.onMessage.addListener(function(message) {
+        console.log('gcm.onMessage '+JSON.stringify(message));
+        if(message.data && message.data.kiosk_update) {
+            try {
+                if(message.data.kiosk_update == 'reload' && win && win.contentWindow) {
+                    console.log('gcm.onMessage invoking location.reload');
+                    win.contentWindow.location.reload(true);
+                    return;
+                }
+            }
+            catch(e) { console.log(e); }
+            
+            // default, or if exception occurred
+            // Reload app
+            console.log('gcm.onMessage invoking runtime.reload');
+            chrome.runtime.reload();
+        }
+    });
   } 
   catch(e) {
       console.log('register_gcm handler setup: '+e);

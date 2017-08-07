@@ -2,6 +2,7 @@
 # http://www.mikeball.info/blog/node-webkit-app-windows-installer/
 # macOS: brew install nsis
 
+!define VERSION_STR  "5.5.1.302"
 !define PRODUCT_NAME "Appazur Kiosk"
 !define LINK_FILENAME "appazurkiosk.lnk"
 !define INSTALLER_FILENAME "AppazurInstaller.exe"
@@ -14,6 +15,15 @@ Name "${PRODUCT_NAME}"
 OutFile "${INSTALLER_FILENAME}"
 
 InstallDir $PROGRAMFILES\AppazurKiosk
+AllowRootDirInstall true
+BrandingText "Appazur Solutions Inc."
+ShowInstDetails "Show"
+ShowUninstDetails "Show"
+VIProductVersion "${VERSION_STR}"
+VIAddVersionKey "ProductName" "${PRODUCT_NAME}"
+VIAddVersionKey "CompanyName" "Appazur Solutions Inc."
+VIAddVersionKey "LegalCopyright" "© Appazur Solutions Inc"
+VIAddVersionKey "FileVersion" "${VERSION_STR}"
 
 # default section start
 Section

@@ -1,0 +1,30 @@
+{
+  "url": {
+    "Value": "http://sunnycrest.can2.appazur.com/pub/display/DEMO-CHROMEBOX-{id}"
+  },
+  "username": {
+    "Value": "admin"
+  },
+  "password": {
+    "Value": "12345678"
+  },
+  "local": {
+    "Value": true
+  },
+  "remote": {
+    "Value": true
+  },
+  "host": {
+    "Value": "127.0.0.1"
+  },
+  "port": {
+    "Value": 8080
+  },
+  "restart": {
+    "Value": 23
+  },
+  "hidecursor": {
+    "Value": true
+  }
+}
+

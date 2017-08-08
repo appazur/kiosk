@@ -9,6 +9,8 @@ if [ -e package.nw ]; then
   rm package.nw
 fi
 
+cp manifest.nwjs.json src/manifest.json
+
 pushd src
 7z a -tzip ../package.nw *
 popd

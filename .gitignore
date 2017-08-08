@@ -1,0 +1,14 @@
+.DS_Store
+
+# downloaded files
+nwjs-win-x64
+
+# generated file
+src/manifest.json
+
+package.nw
+AppazurInstaller.exe
+AppazurInstaller.zip
+
+appazur-kiosk.zip
+

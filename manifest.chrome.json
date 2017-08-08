@@ -1,0 +1,43 @@
+{
+  "name": "Appazur Kiosk",
+  "description": "This version of the Kiosk app is intended for Appazur Digital Signage.",
+  "manifest_version": 2,
+  "version": "5.5.1.302",
+  "author": {
+    "name": "Appazur Solutions",
+    "email": "info+kiosk@appazur.com"
+  },
+  "kiosk_enabled": true,
+  "offline_enabled": true,
+  "icons": {
+    "16": "img/icon_16.png",
+    "128": "img/icon_128.png"
+  },
+  "app": {
+    "background": {
+      "scripts": ["www/js/jquery.min.js","js/main.js"],
+      "persistent": false
+    }
+  },
+  "sockets":{
+    "tcpServer": {
+      "listen": "*"
+    }
+  },
+  "storage": {
+    "managed_schema": "schema.json"
+  },
+  "permissions": [
+    "gcm",
+    "system.display",
+    "system.network",
+    "power",
+    "webview",
+    "alwaysOnTopWindows",
+    "storage",
+    {"fileSystem": ["directory"]}
+  ],
+  "externally_connectable": {
+    "matches": ["*://*.appazur.com/*","*://*.school2go.ca/*","http://sunnycrest.lan:8000/*"]
+  }
+}

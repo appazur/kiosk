@@ -66,14 +66,17 @@ function init() {
     chrome.gcm.onMessage.addListener(function(message) {
         console.log('gcm.onMessage '+JSON.stringify(message));
         if(message.data && message.data.kiosk_update) {
-            try {
+            // On ChromeOS, location.reload causes: 
+            //  Can't open same-window link to "chrome-extension://.../browser.html"; try target="_blank".
+            // see: https://stackoverflow.com/questions/30751939/how-can-chrome-app-reload-itself-document-location-reload-is-not-allowed
+            /*try {
                 if(message.data.kiosk_update == 'reload' && win && win.contentWindow) {
                     console.log('gcm.onMessage invoking location.reload');
                     win.contentWindow.location.reload(true);
                     return;
                 }
             }
-            catch(e) { console.log(e); }
+            catch(e) { console.log(e); }*/
             
             // default, or if exception occurred
             // Reload app

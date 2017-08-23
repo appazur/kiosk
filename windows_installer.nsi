@@ -2,7 +2,7 @@
 # http://www.mikeball.info/blog/node-webkit-app-windows-installer/
 # macOS: brew install nsis
 
-!define VERSION_STR  "5.5.1.302"
+!define VERSION_STR  "5.5.1.303"
 !define PRODUCT_NAME "Appazur Kiosk"
 !define LINK_FILENAME "appazurkiosk.lnk"
 !define INSTALLER_FILENAME "AppazurInstaller.exe"
@@ -53,10 +53,16 @@ Section
   SetOutPath $INSTDIR\locales
   File ${NWJS_WIN_PATH}\locales\en-US.pak
 
-
   # define the uninstaller name
   WriteUninstaller $INSTDIR\${UNINSTALLER_FILENAME}
-
+  
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\AppazurKiosk" \
+                 "DisplayName" "Appazur Kiosk v3"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\AppazurKiosk" \
+                 "UninstallString" "$\"$INSTDIR\${UNINSTALLER_FILENAME}$\""
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\AppazurKiosk" \
+                 "QuietUninstallString" "$\"$INSTDIR\${UNINSTALLER_FILENAME}$\" /S"
+                 
   CreateShortCut "$SMPROGRAMS\${LINK_FILENAME}" "$INSTDIR\nw.exe"
 
 SectionEnd
@@ -87,5 +93,7 @@ Section "Uninstall"
   Delete $INSTDIR\package.nw
   Delete $SMPROGRAMS\${LINK_FILENAME}
   RMDir $INSTDIR
+  
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\AppazurKiosk"
 
 SectionEnd

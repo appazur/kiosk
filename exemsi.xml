@@ -1,0 +1,39 @@
+<MsiWrapper>
+  <Installer>
+    <IconFile Detect="executable" Value="base64:AAABAAEAICAQAAEABADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAgAIAAAAAAAAAAAAAAAAA&#xD;&#xA;AAAAAAAAAAAAAIAAAIAAAACAgAAAAACAAACAgACAAIAAgICAAMDAwAAA/wAA/wAAAP//AAAAAP8A&#xD;&#xA;AP//AP8A/wD///8AAAAAAAAAAAd3AAAAAAAAAAAAAAAAAAd4jd2QAAAAAAAAePjwAAB/j4jdmZAA&#xD;&#xA;AAAAAH+PgHAHh/j92ZmIAAAAAAB4+PCHB3h/iNmYiAAAAAAAf4+AeHeHh/jZiIuwAAAAAHj48Id4&#xD;&#xA;eHhwCYu7sAAAAAB/j4B4d4eHAAC7uIAAAAAAePjwh3iIuwAAeHhwAAAAAH+PgHh4u4mwB4eHgAAA&#xD;&#xA;AAB///CHe7ibvf94eHAAAAAAf//weHeJu73494cAAAAAAH//8IeHm7vdj494CIiIAAB///CIiHu9&#xD;&#xA;3Yj48AAAiHAAf//wiIgHfd2IgAd3d4hwAH//8IiID/d3d3//////cAB3d3CIiAd3d3d3d3d3eHAA&#xD;&#xA;d3dwiIgAAAAAAAAAAACAB///9wiIB4iIiIiIiIiHAHd3d3dwiAf/////////hwAAAAd3dwgH8AAA&#xD;&#xA;AAAAD4cAAAAAd3dwB/AAAAAAAA+HAAAAAAf//wfwAADwDwAPhwAAAAAAd3dw8AAA8A8AD4cAAAAA&#xD;&#xA;AAAAB/AAAP//8A+HAAAAAAAAAAfwAAD///APhwAAAAAAAAAH8A//8AAAD4cAAAAAAAAAB/AA/wAA&#xD;&#xA;AA+HAAAAAAAAAAfwAAAAAAAPhwAAAAAAAAAH8AAAAAAAD4cAAAAAAAAAB/////////+HAAAAAAAA&#xD;&#xA;AAB3d3d3d3d3dwD//gf/wPgB/8BwAP/AIAB/wAAAf8AAAD/AAAA/wABgP8AAYD/AAAA/wAAAP8AA&#xD;&#xA;AAPAAAABwAAAAMAAAADAAAAAwAAAAMAAAACAAAABAAAAAfgAAAH8AAAB/gAAAf8AAAH/+AAB//gA&#xD;&#xA;Af/4AAH/+AAB//gAAf/4AAH/+AAB//wAAw==" />
+    <Output FileName="C:\Users\Trevor\Desktop\AppazurInstaller.msi" />
+    <InstallPrivileges Value="Elevated" />
+    <PerUser Value="no" />
+    <ElevateExecutable Value="always" />
+    <UpgradeCode Value="{2742896C-E786-4FDC-9FC5-CC6F3A3F7C19}" />
+    <ProductId Value="" />
+    <Manufacturer Detect="executable" Value="Appazur Solutions Inc." />
+    <ProductVersion Detect="executable" Value="5.5.1.303" />
+    <ProductName Detect="executable" Value="Appazur Kiosk" />
+    <Comments Detect="executable" Value="" />
+    <Contact Detect="" Value="" />
+    <HelpLink Detect="" Value="" />
+    <UpdateLink Detect="" Value="" />
+    <AboutLink Detect="" Value="" />
+  </Installer>
+  <WrappedInstaller>
+    <Executable FileName="C:\Users\Trevor\Desktop\AppazurInstaller.exe" SuccessCodes="" Impersonate="no" />
+    <ApplicationId Value="AppazurKiosk" />
+    <Install>
+      <Arguments Value="/S">
+        <UILevelNone Value="" />
+        <UILevelBasic Value="" />
+        <UILevelReduced Value="" />
+        <UILevelFull Value="" />
+      </Arguments>
+    </Install>
+    <Uninstall>
+      <Arguments Value="/S">
+        <UILevelNone Value="" />
+        <UILevelBasic Value="" />
+        <UILevelReduced Value="" />
+        <UILevelFull Value="" />
+      </Arguments>
+    </Uninstall>
+  </WrappedInstaller>
+</MsiWrapper>

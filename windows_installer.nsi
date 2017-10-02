@@ -2,12 +2,14 @@
 # http://www.mikeball.info/blog/node-webkit-app-windows-installer/
 # macOS: brew install nsis
 
-!define VERSION_STR  "5.5.1.303"
+!define VERSION_STR  "5.5.1.304"
 !define PRODUCT_NAME "Appazur Kiosk"
 !define LINK_FILENAME "appazurkiosk.lnk"
 !define INSTALLER_FILENAME "AppazurInstaller.exe"
 !define UNINSTALLER_FILENAME "AppazurUninstaller.exe"
 !define NWJS_WIN_PATH "nwjs-win-x64"
+# ticket:1613 NW.js does not include support for needed video/audio codecs:
+!define FFMPEG_WIN_PATH "ffmpeg-win-x64"
 
 Name "${PRODUCT_NAME}"
 
@@ -33,7 +35,8 @@ Section
 
   # specify the files to go in the output path
   File ${NWJS_WIN_PATH}\d3dcompiler_47.dll
-  File ${NWJS_WIN_PATH}\ffmpeg.dll
+  File ${FFMPEG_WIN_PATH}\ffmpeg.dll
+  File ${FFMPEG_WIN_PATH}\CREDITS.chromium
   File ${NWJS_WIN_PATH}\icudtl.dat
   File ${NWJS_WIN_PATH}\libEGL.dll
   File ${NWJS_WIN_PATH}\libGLESv2.dll
@@ -46,6 +49,7 @@ Section
   File ${NWJS_WIN_PATH}\nw.exe
   File ${NWJS_WIN_PATH}\resources.pak
   File ${NWJS_WIN_PATH}\snapshot_blob.bin
+  File LICENSE
 
   # ZIP file of kiosk/src:
   File package.nw
@@ -55,14 +59,14 @@ Section
 
   # define the uninstaller name
   WriteUninstaller $INSTDIR\${UNINSTALLER_FILENAME}
-  
+
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\AppazurKiosk" \
                  "DisplayName" "Appazur Kiosk v3"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\AppazurKiosk" \
                  "UninstallString" "$\"$INSTDIR\${UNINSTALLER_FILENAME}$\""
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\AppazurKiosk" \
                  "QuietUninstallString" "$\"$INSTDIR\${UNINSTALLER_FILENAME}$\" /S"
-                 
+
   CreateShortCut "$SMPROGRAMS\${LINK_FILENAME}" "$INSTDIR\nw.exe"
 
 SectionEnd
@@ -93,7 +97,7 @@ Section "Uninstall"
   Delete $INSTDIR\package.nw
   Delete $SMPROGRAMS\${LINK_FILENAME}
   RMDir $INSTDIR
-  
+
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\AppazurKiosk"
 
 SectionEnd

@@ -2,7 +2,7 @@
 # http://www.mikeball.info/blog/node-webkit-app-windows-installer/
 # macOS: brew install nsis
 
-!define VERSION_STR  "5.5.1.304"
+!define VERSION_STR  "5.5.1.305"
 !define PRODUCT_NAME "Appazur Kiosk"
 !define LINK_FILENAME "appazurkiosk.lnk"
 !define INSTALLER_FILENAME "AppazurInstaller.exe"

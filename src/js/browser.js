@@ -81,7 +81,16 @@ $(function(){
        $(document).keydown(function(e) {
          if(e.which == 65 && e.ctrlKey)
            $('#login').openModal();
-       });
+         // ctrl-Q to restart runtime:
+         if(e.which == 81 && e.ctrlKey) {
+             chrome.runtime.reload();
+         }
+         // ctrl-R to reload page:
+         if(e.which == 82 && e.ctrlKey) {
+            console.log('reload ' + $("#browser").attr('src'));
+            $("#browser").attr('src', $("#browser").attr('src'));
+         }
+     });
 
        $('#submit').click(function(e){
          e.preventDefault();
@@ -142,6 +151,9 @@ $(function(){
   chrome.runtime.onMessage.addListener(function(data){
     if(data.url && data.url != $("#browser").attr('src')){
       $("#browser").attr('src',data.url);
+    }
+    else if(data.reload) {
+        $("#browser").attr('src',$("#browser").attr('src'));
     }
   });
 

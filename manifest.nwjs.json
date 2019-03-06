@@ -5,7 +5,7 @@
   "name": "Appazur Kiosk",
   "description": "This version of the Kiosk app is intended for Appazur Digital Signage.",
   "manifest_version": 2,
-  "version": "5.5.1.305",
+  "version": "5.5.1.306",
   "author": {
     "name": "Appazur Solutions",
     "email": "info+kiosk@appazur.com"

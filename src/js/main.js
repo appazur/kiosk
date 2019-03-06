@@ -67,21 +67,21 @@ function init() {
         console.log('gcm.onMessage '+JSON.stringify(message));
         if(message.data && message.data.kiosk_update) {
             // On ChromeOS, location.reload causes: 
-            //  Can't open same-window link to "chrome-extension://.../browser.html"; try target="_blank".
-            // see: https://stackoverflow.com/questions/30751939/how-can-chrome-app-reload-itself-document-location-reload-is-not-allowed
-            /*try {
-                if(message.data.kiosk_update == 'reload' && win && win.contentWindow) {
-                    console.log('gcm.onMessage invoking location.reload');
-                    win.contentWindow.location.reload(true);
+            //  Can't open same-window link to "chrome-extension://.../browser.html"
+            //  see: https://stackoverflow.com/questions/30751939/how-can-chrome-app-reload-itself-document-location-reload-is-not-allowed
+            try {
+                // app_reload not currently used.
+                // Very jarring on ChromeOS: chrome.runtime.reload();
+                if(message.data.kiosk_update == 'app_reload') {
+                    console.log('gcm.onMessage app_reload');
+                    chrome.runtime.reload();
                     return;
                 }
+                // else kiosk_update == 'reload'
+                console.log('gcm.onMessage reload');
+                chrome.runtime.sendMessage({reload: true});
             }
-            catch(e) { console.log(e); }*/
-            
-            // default, or if exception occurred
-            // Reload app
-            console.log('gcm.onMessage invoking runtime.reload');
-            chrome.runtime.reload();
+            catch(e) { console.log(e); }
         }
     });
   } 
